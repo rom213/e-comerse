@@ -17,6 +17,7 @@ type props={
 
 const Products:React.FC<props> = ({produ}) => {
 const [add, setadd] = useState(1)
+const [img, setimg] = useState(0)
 const navigate=useNavigate()    
 const dispatch=useDispatch()
 const { cartshopin }=useSelector((state:any)=>state)
@@ -61,11 +62,6 @@ const agregarcarrito=()=>{
     }
 
 }
-useEffect(() => {
-
-}, [])
-
-
 
 const handleClick=()=>{
     navigate(`/product/${produ.id}`)
@@ -74,8 +70,8 @@ const handleClick=()=>{
   return (
         <div onClick={handleClick} className='content'>
 
-        <header className='cont1'>
-           <img className='img' src={`${produ.images[0].url}`} alt="" />
+        <header onMouseOut={()=>setimg(0)} onMouseOver={()=>setimg(1)}  className='cont1'>
+           <img className='img' src={`${produ.images[img].url}`} alt="" />
         </header>   
         <div className='cont2'>
             <div>

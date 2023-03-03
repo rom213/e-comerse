@@ -44,13 +44,11 @@ useEffect(() => {
     if (cantidad>0) {
       setcantidad(cantidad-1)
     }
-    dispatch(resta((state.product.price)*1))
   }
 
   const handleclick =()=>{
     setaction(false)
       setcantidad(cantidad+1)
-      dispatch(suma((state.product.price)*1))
   }
   const handledelete=()=>{
     setaction(false)
@@ -62,15 +60,6 @@ useEffect(() => {
   useEffect(() => {
     setoperaoor((state.product.price)*cantidad)
   }, [cantidad])
-
-console.log(state);
-
-  
-useEffect(() => {
-  if (action) {
-    dispatch(suma((state.product.price)*cantidad))
-  }
-}, [state])
 
 
 
