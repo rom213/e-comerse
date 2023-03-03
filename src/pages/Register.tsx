@@ -15,7 +15,8 @@ const {register,handleSubmit,reset}=useForm()
 const submit=(data:any)=>{
 const url:string='https://e-commerce-api-v2.academlo.tech/api/v1/users'
 axios.post(url,data)
-    .then(res=>console.log(res.data))
+    .then(res=>{console.log(res.data)
+    navigate('/user/login')})
     .catch(err=>console.log(err))
 reset(defaultValues)
 }

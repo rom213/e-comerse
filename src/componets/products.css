@@ -54,3 +54,13 @@ span{
     font-size: 1.2rem;
     opacity: 0.3;
 }
+.img{
+    max-width: 300px;
+    max-height: 300px;
+}
+.img2{
+    position: absolute;
+    width: 120px;
+    top:-10px;
+    right: 10px;
+}

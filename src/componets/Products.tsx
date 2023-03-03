@@ -7,6 +7,7 @@ import { setproinf } from '../store/slices/product.info'
 import axios from 'axios'
 import config from '../utils/bearertoken'
 import { getcarthunk } from '../store/slices/token.carshopin'
+import { setstate } from '../store/slices/state.slice'
 
 
 type props={
@@ -16,7 +17,6 @@ type props={
 
 const Products:React.FC<props> = ({produ}) => {
 const [add, setadd] = useState(1)
-const [first, setfirst] = useState(true) 
 const navigate=useNavigate()    
 const dispatch=useDispatch()
 const { cartshopin }=useSelector((state:any)=>state)
@@ -26,26 +26,24 @@ const { cartshopin }=useSelector((state:any)=>state)
 
 const agregarcarrito=()=>{
     let s,t
-    setfirst(!first)
     for (let index = 0; index < cartshopin.length; index++) {
         if(produ?.id===cartshopin[index].productId){
             s=(cartshopin[index].id)
-            t= cartshopin?.[index].quantity
+            t=cartshopin?.[index].quantity
           }
     }
-
+    
     t=t+1
-    
-    
-    
-    
+
     if (s) {
         const url=`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${s}`
         const data={
             quantity: t
         }
         axios.put(url,data,config)
-            .then(res=>console.log('con exito'))
+            .then(res=>{console.log('con exito')
+            dispatch(getcarthunk())
+        })
         
     }else{
         if (add===1) {
@@ -56,14 +54,17 @@ const agregarcarrito=()=>{
             }
             axios.post(url,data,config)
             .then(res=>{console.log('agregado con exito');
-            
+            dispatch(getcarthunk())
         })
             .catch(err=>{console.log(err)})
-        setadd(add+1)
         }
     }
 
 }
+useEffect(() => {
+
+}, [])
+
 
 
 const handleClick=()=>{

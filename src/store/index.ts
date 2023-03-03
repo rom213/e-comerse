@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import products from "./slices/products.slices";
 import proinf from "./slices/product.info";
 import cartshopin from "./slices/token.carshopin";
+import stado from "./slices/state.slice";
 
 const store=configureStore({
 reducer:{
     products,
     proinf,
-    cartshopin
+    cartshopin,
+    stado
 }
 })
 

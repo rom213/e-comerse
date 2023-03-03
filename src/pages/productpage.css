@@ -98,10 +98,11 @@
 }
 .slider{
     display: flex;
-    width: 400px;
+    width: 320px;
     gap: 3rem;
     overflow: hidden;
     scroll-behavior: smooth;
+    transition: scroll-behavior 1000ms;
 }
 .ss{
     width: 300px;
@@ -115,4 +116,29 @@
     display: flex;
     justify-content: center;
     gap: 5rem;
+}
+.buttleft{
+    position: absolute;
+    top: 200px;
+    left: 520px;
+    cursor: pointer;
+} 
+.buttleft:hover{
+transform: scale(1.1);
+}
+.buttrigh{
+    position: absolute;
+    top: 200px;
+    left: 145px;
+    cursor: pointer;
+}
+.buttrigh:hover{
+    transform: scale(1.1);
+}
+.b{
+    cursor: pointer;
+    transition: transform 400ms ;
+}
+.b:hover{
+    transform: scale(1.3);
 }

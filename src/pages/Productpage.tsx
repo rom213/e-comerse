@@ -1,10 +1,12 @@
 import axios, { Axios } from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Products from '../componets/Products'
 import './productpage.css'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import { getcarthunk } from '../store/slices/token.carshopin'
+import config from '../utils/bearertoken'
 
 const Wrapper=styled.div`
 border-top: 1px solid rgb(87, 81, 81);
@@ -17,20 +19,23 @@ border-right: 1px solid rgb(87, 81, 81);
 const Productpage= () => {
   const [similaproducts, setsimilaproducts] = useState()
   const [similarcategory, setsimilarcategory] = useState()
+  const [add, setadd] = useState(1)
   const [count, setcount] = useState(0)
   const [image, setimage] = useState(0)
   const slider:any=document.querySelector('.slider')
   const s:any=similaproducts
   const t:any=similarcategory
-  const { proinf, products } = useSelector((state:any)=>state)
+  const { proinf, products,cartshopin } = useSelector((state:any)=>state)
   const navigate =useNavigate()
-    
+  const dispatch=useDispatch()
+
     useEffect(() => {
       const url:string=`https://e-commerce-api-v2.academlo.tech/api/v1/products?title=${proinf?.brand}`
       axios.get(url)
         .then(res=>setsimilaproducts(res.data))
         .catch(err=>console.log(err));
     }, [proinf])
+    console.log(proinf);
     
     
     
@@ -42,6 +47,43 @@ const Productpage= () => {
     }, [proinf])
     
     
+    const agregarcarrito=()=>{
+      let s,t
+      for (let index = 0; index < cartshopin.length; index++) {
+          if(proinf?.id===cartshopin[index].productId){
+              s=(cartshopin[index].id)
+              t=cartshopin?.[index].quantity
+            }
+      }
+      
+      t=t+count
+  
+      if (s) {
+          const url=`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${s}`
+          const data={
+              quantity: t
+          }
+          axios.put(url,data,config)
+              .then(res=>{console.log('con exito')
+              dispatch(getcarthunk())
+          })
+    setcount(0)
+      }else{
+          if (add===1) {
+              const url:any='https://e-commerce-api-v2.academlo.tech/api/v1/cart'
+              const data={
+                  quantity: add,
+                  productId:proinf?.id
+              }
+              axios.post(url,data,config)
+              .then(res=>{console.log('agregado con exito');
+              dispatch(getcarthunk())
+          })
+              .catch(err=>{console.log(err)})
+          }
+      }
+  
+  }
 
     const handleminus=()=>{
       if (count >= 1) {
@@ -50,25 +92,23 @@ const Productpage= () => {
     }
     
     const handlscroll=(index:any)=>{
-      slider.scrollLeft +=300
       if (index==0) {
         slider.scrollLeft =0
       }
       if (index==1) {
-        slider.scrollLeft =300
+        slider.scrollLeft =350
       }
       if (index==2) {
-        slider.scrollLeft =600
+        slider.scrollLeft =630
       }
     }
 
 
-    
 
   return (
     <div className='contentall'>
       <div className='contpunto'>
-        <h3 className='home' onClick={()=>navigate('/')}>home</h3>
+        <h3 className='home' onClick={()=>navigate('/')}>Home</h3>
         <div className='punto'></div>
         <div>{proinf?.title}</div>
       </div>
@@ -77,6 +117,8 @@ const Productpage= () => {
 
         <div>
           <div className='slider'>
+          <i onClick={()=>{slider.scrollLeft -= 100}} className='buttrigh bx bxs-chevrons-left bx-lg'></i>
+
               {
                 proinf?.images.map((im:any)=>{
                   return <div className='ss'>
@@ -84,12 +126,13 @@ const Productpage= () => {
                           </div>
                 })
               }
+              <i onClick={()=>{slider.scrollLeft += 100}} className='buttleft bx bxs-chevrons-right bx-lg'></i>
           </div>
 
           <div className='contimages'>
             {
               proinf?.images.map((im:any,index:number)=>{
-                return <div>
+                return <div className='b'>
                           <img onClick={()=>handlscroll(index)} className={`imag selc${index}`} src={`${im.url}`} alt="" />
                       </div>
                   })
@@ -116,7 +159,7 @@ const Productpage= () => {
                 <div  className='value'>{count}</div>
                 <div onClick={()=>setcount(count+1)} className='minus'><i className='bx bx-plus'></i></div>
               </div>
-              <button className='btn2'>add to card <i className='bx bx-cart'></i></button>
+              <button onClick={agregarcarrito} className='btn2'>add to card <i className='bx bx-cart'></i></button>
 
             </div>
         </div>

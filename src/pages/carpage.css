@@ -1,0 +1,46 @@
+.r{
+    height: 90px;
+}
+.amount{
+    display: flex;
+    align-items: center;
+}
+.dat{
+    position: absolute;
+    top: 10px;
+    left: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.contenimage{
+    position: relative;
+    top: -10px;
+    left: 20px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+}
+.contenticon{
+    position: absolute;
+    display: flex;
+    gap: 0.2rem;
+    right: 10px;
+    top: 90px;
+}
+.d{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.d:hover{
+    transform: scale(1.09);
+}
+.pric{
+    position: absolute;
+    top: 65px;
+    left: 250px;
+}
