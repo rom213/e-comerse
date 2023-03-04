@@ -10,56 +10,58 @@ type props={
 }
 
 const Cardpage:React.FC<props> = ({state}) => {
-  const [action, setaction] = useState(true)
   const [operadoor, setoperaoor] = useState(0)
-  const [cantidad, setcantidad] = useState(0)
   const dispatch=useDispatch()
   const { cartshopin, stado }=useSelector((state:any)=>state)
   
-useEffect(() => {
-    setcantidad(state.quantity)
-}, [cartshopin])
 
-useEffect(() => {
-  if (cantidad>=0) {
-    const url=`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${state.id}`
-    const data={
-        quantity: cantidad
-    }
-    axios.put(url,data,config)
-        .then(res=>{console.log('con exito')
-    })
-  }
-}, [cantidad])
+
 
 
   const handle=()=>{
     
-    if (cantidad===1) {
+    if (state.quantity===1) {
       let s=state.id
       const url=`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${s}`
       axios.delete(url,config)
         .then(res=>{console.log('borrado'); dispatch(getcarthunk())})
       }  
-    if (cantidad>0) {
-      setcantidad(cantidad-1)
+    if (state.quantity>0) {
+      let s=state.quantity
+      s--
+      const url=`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${state.id}`
+      const data={
+          quantity: s
+      }
+      axios.put(url,data,config)
+          .then(res=>{console.log('con exito')
+          dispatch(getcarthunk())
+      })
+
     }
   }
 
   const handleclick =()=>{
-    setaction(false)
-      setcantidad(cantidad+1)
+    let s=state.quantity
+      s++
+      const url=`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${state.id}`
+      const data={
+          quantity: s
+      }
+      axios.put(url,data,config)
+          .then(res=>{console.log('con exito')
+          dispatch(getcarthunk())
+      })
   }
   const handledelete=()=>{
-    setaction(false)
     let s=state.id
     const url=`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${s}`
     axios.delete(url,config)
       .then(res=>{console.log('borrado'); dispatch(getcarthunk())})
   }
   useEffect(() => {
-    setoperaoor((state.product.price)*cantidad)
-  }, [cantidad])
+    setoperaoor((state.product.price)*state.quantity)
+  }, [state.quantity])
 
 
 
@@ -72,7 +74,7 @@ useEffect(() => {
       </div>
         <div className='dat'>
           <h5>{state.product.title}</h5>
-          <div className='amount'>Amount: <h3>{cantidad}</h3> </div>
+          <div className='amount'>Amount: <h3>{state.quantity}</h3> </div>
         </div>
     <div className='contenticon'>
       <div className='d'>

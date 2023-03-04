@@ -16,6 +16,7 @@ import { Protectroutes } from './componets/Protectroutes'
 
 const App:React.FC = ()=> {
   const [local, setlocal] = useState(false)
+  const [quanty, setquanty] = useState(0)
   const dispatch=useDispatch()
   const navigate= useNavigate()
   const { cartshopin, stado }=useSelector((state:any)=>state)
@@ -28,6 +29,20 @@ const App:React.FC = ()=> {
     dispatch(getcarthunk())
   }, [])
 
+  useEffect(() => {
+      setquanty(0)
+      if (localStorage.getItem('token')) {
+        for (let index = 0; index < cartshopin?.length; index++) {
+          setquanty(quanty+((cartshopin[index]?.quantity)*cartshopin[index]?.product?.price))
+        }
+      }else{
+        setquanty(0)
+      }
+  }, [cartshopin])
+
+
+  
+console.log(quanty);
 
   useEffect(() => {
     setlocal(false)
@@ -65,7 +80,7 @@ const App:React.FC = ()=> {
         }
 
 <div className='price'>
-    <h2>valor total: <b>{stado}</b></h2>
+    <h2>valor total: <b>{quanty}</b></h2>
     <img className='img2' src="https://openmoji.org/php/download_asset.php?type=emoji&emoji_hexcode=1F928&emoji_variant=color" alt="" />
 </div>
       </div>:
