@@ -30,7 +30,7 @@ const App:React.FC = ()=> {
   useEffect(()=> {
     dispatch(getAllproductsThunk()),
     dispatch(getcarthunk())
-  }, [])
+  }, [localStorage.getItem('token')])
 
 
   useEffect(() => {
