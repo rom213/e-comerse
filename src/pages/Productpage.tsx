@@ -15,8 +15,13 @@ border-left: 1px solid rgb(87, 81, 81) ;
 border-right: 1px solid rgb(87, 81, 81);
 `
 
+type props={
+  setnavigator:any,
+}
 
-const Productpage= () => {
+
+const Productpage:React.FC<props>= ({setnavigator}) => {
+  const [similar, setsimilar] = useState()
   const [similaproducts, setsimilaproducts] = useState()
   const [similarcategory, setsimilarcategory] = useState()
   const [add, setadd] = useState(1)
@@ -25,24 +30,37 @@ const Productpage= () => {
   const slider:any=document.querySelector('.slider')
   const s:any=similaproducts
   const t:any=similarcategory
+  const n:any=similar
   const { proinf, products,cartshopin } = useSelector((state:any)=>state)
+  const [imgselect, setimgselect] = useState(0)
   const navigate =useNavigate()
   const dispatch=useDispatch()
 
     useEffect(() => {
+      setnavigator(6)
       const url:string=`https://e-commerce-api-v2.academlo.tech/api/v1/products?title=${proinf?.brand}`
       axios.get(url)
         .then(res=>setsimilaproducts(res.data))
         .catch(err=>console.log(err));
     }, [proinf])
-    console.log(proinf);
-    
-    
-    
+ console.log(products)
+
+      useEffect(() => {
+         if ( similaproducts ) {
+          const f:any=s.filter((product:any)=>proinf.id !=product.id)
+          setsimilar(f)
+          
+          }
+      }, [proinf,s])
+      
+
+
+
     useEffect(() => {
       if (proinf){
         const s:any=products.filter((product:any)=>product.category.id===proinf.category.id)
-        setsimilarcategory(s);
+        const t:any=s.filter((product:any)=>proinf.id !=product.id)
+        setsimilarcategory(t);
       }
     }, [proinf])
     
@@ -94,15 +112,32 @@ const Productpage= () => {
     const handlscroll=(index:any)=>{
       if (index==0) {
         slider.scrollLeft =0
+        setimgselect(0)
       }
       if (index==1) {
         slider.scrollLeft =350
+        setimgselect(1)
       }
       if (index==2) {
-        slider.scrollLeft =630
+        slider.scrollLeft =700
+        setimgselect(2)
       }
     }
 
+    const hand=()=>{
+
+      if(slider.scrollLeft<=300){
+        setimgselect(0)
+      }
+      if(slider.scrollLeft>=210){
+        setimgselect(1)
+      }
+      if(slider.scrollLeft>=400){
+        setimgselect(2)
+      }
+
+    }
+    
 
 
   return (
@@ -117,7 +152,7 @@ const Productpage= () => {
 
         <div>
           <div className='slider'>
-          <i onClick={()=>{slider.scrollLeft -= 100}} className='buttrigh bx bxs-chevrons-left bx-lg'></i>
+          <i onClick={()=>{slider.scrollLeft -= 100; hand()}} className='buttrigh bx bxs-chevrons-left bx-lg'></i>
 
               {
                 proinf?.images.map((im:any)=>{
@@ -126,14 +161,14 @@ const Productpage= () => {
                           </div>
                 })
               }
-              <i onClick={()=>{slider.scrollLeft += 100}} className='buttleft bx bxs-chevrons-right bx-lg'></i>
+              <i onClick={()=>{slider.scrollLeft += 100;hand()}} className='buttleft bx bxs-chevrons-right bx-lg'></i>
           </div>
 
           <div className='contimages'>
             {
               proinf?.images.map((im:any,index:number)=>{
-                return <div className='b'>
-                          <img onClick={()=>handlscroll(index)} className={`imag selc${index}`} src={`${im.url}`} alt="" />
+                return <div className={`b ${index===imgselect && 'activ'}`}>
+                          <img onClick={()=>handlscroll(index)} className={`imag `} src={`${im.url}`} alt="" />
                       </div>
                   })
             }
@@ -169,7 +204,7 @@ const Productpage= () => {
       <div className='Dis'>Discover similar items</div>
       <div className='contentsimilar'>
         {
-            s?.map((produ:any)=>{
+            n?.map((produ:any)=>{
                 return <Products key={produ.id} produ={(produ)}/>
             }) 
         }

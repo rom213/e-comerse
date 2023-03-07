@@ -3,6 +3,9 @@
 }
 .amount{
     display: flex;
+    position: absolute;
+    top: 63px;
+    right: 25px;
     align-items: center;
 }
 .dat{
@@ -40,7 +43,8 @@
     transform: scale(1.09);
 }
 .pric{
+    display: flex;
     position: absolute;
-    top: 65px;
-    left: 250px;
+    top: 105px;
+    left: 40px;
 }

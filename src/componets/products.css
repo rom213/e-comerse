@@ -1,6 +1,6 @@
 .content{
     width: 300px;
-    height: 520px;
+    height: 410px;
     border-radius: 5px;
     overflow: hidden;
     border-top: 1px solid rgb(87, 81, 81);
@@ -8,6 +8,7 @@
     border-left: 1px solid rgb(87, 81, 81) ;
     border-right: 1px solid rgb(87, 81, 81);
 }
+
 
 
 
@@ -56,8 +57,8 @@ span{
     opacity: 0.3;
 }
 .img{
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 270px;
+    max-height: 250px;
     transition: 200ms;
 }
 .img2{

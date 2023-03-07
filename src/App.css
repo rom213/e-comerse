@@ -42,8 +42,10 @@ button:hover{
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.5;
 
+}
+.user:hover{
+    background-color: rgb(252, 226, 226);
 }
 .user1{
     border-left: 1px solid rgb(87, 81, 81) ;
@@ -54,13 +56,12 @@ button:hover{
 
 }
 
-.ecomer{
+.ecomer{    
     display: flex;
     align-items: center;
     padding-left: 2rem;
     font-size: 1.4rem;
     color: rgb(249, 133, 133);
-    
 }
 .desple{
     position: fixed;
@@ -92,12 +93,18 @@ button:hover{
 }
 .price{
     position: fixed;
-    top: 550px;
+    top: 540px;
     right: 26px;
     width: 365px;
     height: 100px;
     background-color: #fff;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
 }
 .yourcard{
     position: fixed;
@@ -113,4 +120,49 @@ button:hover{
     position: absolute;
     left: 100px;
     z-index: 2000;
+}
+.valu{
+    opacity: 0.5;
+}
+.a{
+    display: flex;
+}
+.guia{
+    transition: 500ms;
+    background-color: rgb(245, 170, 170);
+    color: white;
+}
+.circle{
+    transition: 300ms;
+}
+
+.circle:hover{
+    transform: scale(1.09);
+    cursor: pointer;
+}
+.btncomprar{
+    position: relative;
+    bottom: -6px;
+    width: 100%;
+    height: 60%;
+    background-color: #BAD7E9;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: 100ms ease;
+}
+.btncomprar:hover{
+    font-size: 1.9rem;
+    background-color: #8fc4e6;
+}
+.img4{
+    position: absolute;
+    top: 10px;
+    left: -10px;
+}
+.you{
+    height: 5px;
 }

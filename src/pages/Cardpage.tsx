@@ -9,7 +9,7 @@ type props={
   state:any
 }
 
-const Cardpage:React.FC<props> = ({state}) => {
+const Cardpage:React.FC<props> = ({state}) => { 
   const [operadoor, setoperaoor] = useState(0)
   const dispatch=useDispatch()
   const { cartshopin, stado }=useSelector((state:any)=>state)
@@ -74,7 +74,6 @@ const Cardpage:React.FC<props> = ({state}) => {
       </div>
         <div className='dat'>
           <h5>{state.product.title}</h5>
-          <div className='amount'>Amount: <h3>{state.quantity}</h3> </div>
         </div>
     <div className='contenticon'>
       <div className='d'>
@@ -87,7 +86,8 @@ const Cardpage:React.FC<props> = ({state}) => {
       <i onClick={()=>{handledelete()}} className=' bx bx-trash bx-sm'></i>
       </div>
     </div>
-    <div className='pric'>total: <b>{operadoor}</b></div>
+    <div className='pric'>total: <b>{operadoor.toFixed(1)}</b></div>
+    <div className='amount'>Amount: <h3>{state.quantity}</h3> </div>
     </div>
 
   )

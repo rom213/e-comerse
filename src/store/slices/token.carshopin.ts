@@ -2,10 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import config from "../../utils/bearertoken";
 
+export interface AuthState{
+    accesTok:string | null ;
+}
+
+const initialState:AuthState={
+    accesTok:null
+}
 
 const carshopin=createSlice({
     name:'cartshopin',
-    initialState:null,
+    initialState,
     reducers:{
         setcarshopin:(state,action)=>action.payload
     }
