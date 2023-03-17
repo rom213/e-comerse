@@ -1,18 +1,24 @@
 import axios from 'axios'
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import defaultValues from '../utils/defaultValues'
 import './register.css'
 import {  useNavigate } from 'react-router-dom'
 
-
+type data={
+  firstName:string,
+  lastName:string,
+  email:string,
+  password:string,
+  phone:string
+}
 
 const Register = () => {
     const navigate=useNavigate()
 
-const {register,handleSubmit,reset}=useForm()
+const {register,handleSubmit,reset}=useForm<data>()
 
-const submit=(data:any)=>{
+const submit:SubmitHandler<data>=(data)=>{
 const url:string='https://e-commerce-api-v2.academlo.tech/api/v1/users'
 axios.post(url,data)
     .then(res=>{console.log(res.data)

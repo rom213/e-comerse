@@ -1,19 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import products from "./slices/products.slices";
-import proinf from "./slices/product.info";
-import cartshopin from "./slices/token.carshopin";
-import stado from "./slices/state.slice";
+import todo from "./slices/product.info";
+
 
 const store=configureStore({
 reducer:{
-    products,
-    proinf,
-    cartshopin,
-    stado
+    todo
 }
 })
 
 export type RootState = ReturnType<typeof store.getState>
-export type Dispatch = typeof store.dispatch
-
+export type AppDispatch = typeof store.dispatch
 export default store 

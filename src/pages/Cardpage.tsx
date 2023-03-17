@@ -1,30 +1,26 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { resta, setstate, suma } from '../store/slices/state.slice'
-import { getcarthunk } from '../store/slices/token.carshopin'
 import config from '../utils/bearertoken'
 import './carpage.css'
-type props={
-  state:any
+import { Globalstore } from '../secstore/Store_global'
+import { Carshop } from '../utils/interfase'
+
+interface prop{
+  state:Carshop
 }
 
-const Cardpage:React.FC<props> = ({state}) => { 
+
+const Cardpage:React.FC<prop> = ({state}) => { 
   const [operadoor, setoperaoor] = useState(0)
-  const dispatch=useDispatch()
-  const { cartshopin, stado }=useSelector((state:any)=>state)
+  const {ThunkCarshop} = Globalstore()
   
-
-
-
-
   const handle=()=>{
     
     if (state.quantity===1) {
       let s=state.id
       const url=`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${s}`
       axios.delete(url,config)
-        .then(res=>{console.log('borrado'); dispatch(getcarthunk())})
+        .then(res=>{console.log('borrado'); ThunkCarshop()})
       }  
     if (state.quantity>0) {
       let s=state.quantity
@@ -35,7 +31,7 @@ const Cardpage:React.FC<props> = ({state}) => {
       }
       axios.put(url,data,config)
           .then(res=>{console.log('con exito')
-          dispatch(getcarthunk())
+          ThunkCarshop()
       })
 
     }
@@ -49,15 +45,15 @@ const Cardpage:React.FC<props> = ({state}) => {
           quantity: s
       }
       axios.put(url,data,config)
-          .then(res=>{console.log('con exito')
-          dispatch(getcarthunk())
+          .then(res=>{
+          ThunkCarshop()
       })
   }
   const handledelete=()=>{
     let s=state.id
     const url=`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${s}`
     axios.delete(url,config)
-      .then(res=>{console.log('borrado'); dispatch(getcarthunk())})
+      .then(res=>{ThunkCarshop()})
   }
   useEffect(() => {
     setoperaoor((state.product.price)*state.quantity)

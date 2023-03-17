@@ -1,14 +1,14 @@
+import { Snackbar } from '@mui/material'
+import Alert from '@mui/material/Alert'
+import Grid from '@mui/material/Grid'
+import { Box, Container } from '@mui/system'
 import React from 'react'
 
-const Purchases_page = () => {
-
-
-
-
-
-  
+const Purchases_page:React.FC<{}> = () => {
   return (
-    <div>purchases_page</div>
+    <Container maxWidth='xl'>
+       
+    </Container>
   )
 }
 

@@ -1,14 +1,32 @@
-import { createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { productts } from '../../utils/interfase';
 
-const proinf= createSlice({
-    name:'proinf',
-    initialState:null,
-    reducers:{ 
-        setproinf:(state,action)=>action.payload
+interface InitialState {
+    todoCard: productts[];  
+  }       
+  
+  const init: InitialState  =  {
+    todoCard: [],
+  }
+
+export const todoSlice = createSlice({
+    name: 'todo',
+    initialState: init,
+    reducers: {
+        setupdate: (state, action:PayloadAction<productts>) => {
+            return {
+                // Return a copy of the array and SHOULD update the state array here "immutably"
+                ...state,
+                todoCard: [
+                    ...state.todoCard,
+                    action.payload
+                ]
+            }
+        }
     }
 })
 
- export const {setproinf}=proinf.actions
- export default proinf.reducer
+export const { setupdate } = todoSlice.actions
+
+export default todoSlice.reducer
 

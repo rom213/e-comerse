@@ -1,21 +1,47 @@
 .products{
     margin: 220px 400px;
     display: grid;
-    grid-template-columns: auto auto auto;
-    width: 900px;
+    grid-template-columns: 1fr 1fr 1fr;
+    min-width: 940px;
+    overflow: hidden;
     gap: 1rem;
+    animation-name:desple;
+    animation-duration: 1.5s;
+    animation-iteration-count: 1;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in;
 }
+
+
+
+
+
+@keyframes desple{
+    0%{
+        transform: translate(80%);
+    }
+
+    
+}
+
+
+
+
+
+
+
+
 .continp{
     position: absolute;
     top: 130px;
     left: 400px;
 }
 #dato{
-    width: 760px;
+    width: 650px;
     height: 40px;
     padding-left: 0.5rem;
     font-size: 1.2rem;
-    opacity: 0.5;
 }
 
 #dato:focus{ 
@@ -24,10 +50,25 @@
 .butt{
     position: relative;
     top: 4px;
-    width: 140px;
+    width: 280px;
     height: 40px;
     background-color: rgb(249, 114, 114);
     border-color: transparent;
     color: white;
-    
+}
+
+.select{
+    width: 300px;
+    position: fixed;
+    height: 40px;
+    top: 135px;
+    left: 40px;
+    font-size: 1.3rem;
+    border-left: none;
+    border-right: none;
+    opacity: 0.7;
+}
+.select:focus{ 
+    outline: none;
+    transition: 10000ms;
 }

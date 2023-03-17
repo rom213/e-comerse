@@ -4,41 +4,38 @@ import { useSelector } from 'react-redux/es/hooks/useSelector'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import { useDispatch } from 'react-redux'
-import { getAllproductsThunk } from './store/slices/products.slices'
 import Productinfo from './pages/Productpage'
 import Register from './pages/Register'
 import Loginpage from './pages/Loginpage'
 import Cardpage from './pages/Cardpage'
 import { useNavigate } from 'react-router-dom'
-import { getcarthunk, setcarshopin } from './store/slices/token.carshopin'
 import { Protectroutes } from './componets/Protectroutes'
 import Purchases_page from './pages/Purchases_page'
-import { useCustomSelector } from './hooks/redux'
+import { Globalstore } from './secstore/Store_global'
+import axios from 'axios'
+import config from './utils/bearertoken'
 
 
 const App:React.FC = ()=> {
   const [local, setlocal] = useState(false)
   const [quanty, setquanty] = useState(0)
-  const [one, setone] = useState(false)
   const [navigator, setnavigator] = useState(0)
-  const dispatch=useDispatch()
-  const navigate= useNavigate()
-  const { cartshopin }=useSelector((state:any)=>state)
-
-
+  const navigate= useNavigate() 
+  
+  const {ThunkCarshop,carshopp, ThunkProdu} = Globalstore()
 
   useEffect(()=> {
-    dispatch(getAllproductsThunk()),
-    dispatch(getcarthunk())
-  }, [localStorage.getItem('token')])
+    ThunkProdu()
+    ThunkCarshop()
+  }, [local])
 
 
   useEffect(() => {
   
       if (localStorage.getItem('token')) {
         let s:number[]=[]
-        for (let index = 0; index < cartshopin?.length; index++) {
-          s.push(((cartshopin[index]?.quantity)*cartshopin[index]?.product?.price))
+        for (let index = 0; index < carshopp?.length; index++) {
+          s.push((carshopp[index]?.quantity)*carshopp[index]?.product?.price)
         }
         let t:number=0
         for (let index = 0; index < s?.length; index++) {
@@ -46,16 +43,18 @@ const App:React.FC = ()=> {
         }
         setquanty(t)
       }
-
-
-  }, [local,cartshopin])
-console.log(quanty)
+  }, [local,carshopp])
 
   useEffect(() => {
     setlocal(false)
   }, [localStorage.getItem('token')])
   
   const purshases=()=>{
+    const url='https://e-commerce-api-v2.academlo.tech/api/v1/purchases'
+    axios.post(url,{},config)
+      .then(res=>{console.log(console.log(res.data),
+        ThunkCarshop()
+        )})
   }
 
 
@@ -65,7 +64,7 @@ console.log(quanty)
     <div className="App">
       <div className='fix'>
         <div className='ecomer'>
-          <h1>e-comerse</h1>
+          <h1 className='ecom'>e-comerse</h1>
         </div>
         <div className='contenicon'>
             <div onClick={()=>{setnavigator(1);navigate('user/login')}} className={`user user1 ${navigator===1 && 'guia'}`}><i  className='bx bx-user bx-md'></i></div>
@@ -88,8 +87,8 @@ console.log(quanty)
           quanty!=0 ?
         <div>
         {
-          cartshopin?.map((state:any)=>{
-            return <><div className='you'></div><Cardpage key={state.id} state={(state)} /></>
+          carshopp?.map((state)=>{
+            return <><div className='you'></div><Cardpage key={state.id} state={state} /></>
           })
         }
         </div>:
@@ -102,12 +101,10 @@ console.log(quanty)
     <h2 className='valu'>valor total: </h2>
     <h2><b>${quanty.toFixed(2)}</b></h2>
   </div>
-  <div onClick={()=>{ purshases();navigate('/Purchases_page'); dispatch(setcarshopin(null))}} className='btncomprar'>Buy Now</div>
+  <div onClick={()=>{ purshases();}} className='btncomprar'>Buy Now</div>
 </div>:
 <div></div>
 }
-
-
       </div>:
       <div></div>
 }

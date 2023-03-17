@@ -1,76 +1,79 @@
-import axios, { Axios } from 'axios'
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Products from '../componets/Products'
 import './productpage.css'
-import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { getcarthunk } from '../store/slices/token.carshopin'
 import config from '../utils/bearertoken'
+import { Globalstore } from '../secstore/Store_global'
+import { productts } from '../utils/interfase'
+import { useAppSelector } from '../hooks/redux'
 
-const Wrapper=styled.div`
-border-top: 1px solid rgb(87, 81, 81);
-border-bottom: 1px solid rgb(87, 81, 81);
-border-left: 1px solid rgb(87, 81, 81) ;
-border-right: 1px solid rgb(87, 81, 81);
-`
 
 type props={
-  setnavigator:any,
+  setnavigator:(number:number)=>void,
 }
 
 
+
+
 const Productpage:React.FC<props>= ({setnavigator}) => {
-  const [similar, setsimilar] = useState()
-  const [similaproducts, setsimilaproducts] = useState()
-  const [similarcategory, setsimilarcategory] = useState()
+  const [similar, setsimilar] = useState<productts[]>()
+  const [similaproducts, setsimilaproducts] = useState<productts[]>()
+  const [similarcategory, setsimilarcategory] = useState<productts[]>()
   const [add, setadd] = useState(1)
   const [count, setcount] = useState(0)
-  const [image, setimage] = useState(0)
-  const slider:any=document.querySelector('.slider')
-  const s:any=similaproducts
-  const t:any=similarcategory
-  const n:any=similar
-  const { proinf, products,cartshopin } = useSelector((state:any)=>state)
+  const slider:HTMLButtonElement | null =document.querySelector('.slider')
+  const [first, setfirst] = useState<productts>()
+
+ 
+  const { todo } = useAppSelector((state)=>state)
+
+  useEffect(() => {
+      todo.todoCard.map(state=>{
+        setfirst(state)
+      })
+  }, [todo])
+
   const [imgselect, setimgselect] = useState(0)
+  const {pproducts, carshopp, ThunkCarshop  }=Globalstore()
+
   const navigate =useNavigate()
   const dispatch=useDispatch()
-
+    
     useEffect(() => {
       setnavigator(6)
-      const url:string=`https://e-commerce-api-v2.academlo.tech/api/v1/products?title=${proinf?.brand}`
+      const url:string=`https://e-commerce-api-v2.academlo.tech/api/v1/products?title=${first?.brand}`
       axios.get(url)
         .then(res=>setsimilaproducts(res.data))
         .catch(err=>console.log(err));
-    }, [proinf])
- console.log(products)
+    }, [first])
 
       useEffect(() => {
          if ( similaproducts ) {
-          const f:any=s.filter((product:any)=>proinf.id !=product.id)
-          setsimilar(f)
-          
+          setsimilar(similaproducts.filter((product)=>first?.id !=product.id))
           }
-      }, [proinf,s])
+      }, [first,similaproducts])
       
-
+      
+ 
 
 
     useEffect(() => {
-      if (proinf){
-        const s:any=products.filter((product:any)=>product.category.id===proinf.category.id)
-        const t:any=s.filter((product:any)=>proinf.id !=product.id)
+      if (first){
+        const s:productts[]=pproducts.filter((product)=>product.category.id===first.category.id)
+        const t:productts[]=s.filter((product)=>first.id !=product.id)
         setsimilarcategory(t);
       }
-    }, [proinf])
+    }, [first])
     
     
     const agregarcarrito=()=>{
-      let s,t
-      for (let index = 0; index < cartshopin.length; index++) {
-          if(proinf?.id===cartshopin[index].productId){
-              s=(cartshopin[index].id)
-              t=cartshopin?.[index].quantity
+      let s:number=0,t:number=0
+      for (let index = 0; index < carshopp.length; index++) {
+          if(first?.id===carshopp[index].productId){
+              s=(carshopp[index].id)
+              t=carshopp?.[index].quantity
             }
       }
       
@@ -83,19 +86,19 @@ const Productpage:React.FC<props>= ({setnavigator}) => {
           }
           axios.put(url,data,config)
               .then(res=>{console.log('con exito')
-              dispatch(getcarthunk())
+              ThunkCarshop()
           })
     setcount(0)
       }else{
           if (add===1) {
-              const url:any='https://e-commerce-api-v2.academlo.tech/api/v1/cart'
+              const url='https://e-commerce-api-v2.academlo.tech/api/v1/cart'
               const data={
                   quantity: add,
-                  productId:proinf?.id
+                  productId:first?.id
               }
               axios.post(url,data,config)
               .then(res=>{console.log('agregado con exito');
-              dispatch(getcarthunk())
+              ThunkCarshop()
           })
               .catch(err=>{console.log(err)})
           }
@@ -109,64 +112,86 @@ const Productpage:React.FC<props>= ({setnavigator}) => {
       }
     }
     
-    const handlscroll=(index:any)=>{
-      if (index==0) {
-        slider.scrollLeft =0
-        setimgselect(0)
+    
+    const handlscroll=(index:number)=>{
+      if (slider) {
+        if (index==0) {
+          slider.scrollLeft =0
+          setimgselect(0)
+        }
+        if (index==1) {
+          slider.scrollLeft =350
+          setimgselect(1)
+        }
+        if (index==2) {
+          slider.scrollLeft =700
+          setimgselect(2)
+        }
       }
-      if (index==1) {
-        slider.scrollLeft =350
-        setimgselect(1)
+
+    }
+
+    const hand1=()=>{
+      if (slider) {
+        slider.scrollLeft -= 100
+        hand()
       }
-      if (index==2) {
-        slider.scrollLeft =700
-        setimgselect(2)
+    }
+    const hand2=()=>{
+      if (slider) {
+        slider.scrollLeft += 100
+        hand()
       }
     }
 
-    const hand=()=>{
 
-      if(slider.scrollLeft<=300){
-        setimgselect(0)
-      }
-      if(slider.scrollLeft>=210){
-        setimgselect(1)
-      }
-      if(slider.scrollLeft>=400){
-        setimgselect(2)
-      }
+    const hand =():void=>{
+if (slider) {
+
+  if(slider.scrollLeft<=300){
+    setimgselect(0)
+  }
+  if(slider.scrollLeft>=210){
+    setimgselect(1)
+  }
+  if(slider.scrollLeft>=400){
+    setimgselect(2)
+  }
+
+}
+
 
     }
     
-
 
   return (
     <div className='contentall'>
       <div className='contpunto'>
         <h3 className='home' onClick={()=>navigate('/')}>Home</h3>
         <div className='punto'></div>
-        <div>{proinf?.title}</div>
+        <div>{first?.title}</div>
       </div>
 
       <div className='sec1'>
 
         <div>
           <div className='slider'>
-          <i onClick={()=>{slider.scrollLeft -= 100; hand()}} className='buttrigh bx bxs-chevrons-left bx-lg'></i>
+          
+          <i onClick={()=>{{hand1()}}} className='buttrigh bx bxs-chevrons-left bx-lg'></i>
 
               {
-                proinf?.images.map((im:any)=>{
+                first?.images.map((im)=>{
                   return <div className='ss'>
                             <img className='im' src={`${im.url}`} alt="" />
                           </div>
                 })
               }
-              <i onClick={()=>{slider.scrollLeft += 100;hand()}} className='buttleft bx bxs-chevrons-right bx-lg'></i>
+              <i onClick={()=>{hand2()}} className='buttleft bx bxs-chevrons-right bx-lg'></i>
           </div>
 
           <div className='contimages'>
             {
-              proinf?.images.map((im:any,index:number)=>{
+              first?.images.map((im,index:number)=>{
                 return <div className={`b ${index===imgselect && 'activ'}`}>
                           <img onClick={()=>handlscroll(index)} className={`imag `} src={`${im.url}`} alt="" />
                       </div>
@@ -177,17 +202,17 @@ const Productpage:React.FC<props>= ({setnavigator}) => {
         </div>
         <div className='cardinfo'>
             <div>
-              <span>{proinf?.brand}</span>
-              <h2>{proinf?.title}</h2>
+              <span>{first?.brand}</span>
+              <h2>{first?.title}</h2>
             </div>
             <div>
-              <p>{proinf?.description}</p>
+              <p>{first?.description}</p>
             </div>
 
             <div className='contentvalues'>
               <div className='conprice'>
                 <span>price</span>
-                <b>{proinf?.price}</b>
+                <b>{first?.price}</b>
               </div>
               <div className='contall'>
                 <div onClick={handleminus} className='minus'><i className='bx bx-minus'></i></div>
@@ -204,12 +229,12 @@ const Productpage:React.FC<props>= ({setnavigator}) => {
       <div className='Dis'>Discover similar items</div>
       <div className='contentsimilar'>
         {
-            n?.map((produ:any)=>{
+            similar?.map((produ)=>{
                 return <Products key={produ.id} produ={(produ)}/>
             }) 
         }
         {
-            t?.map((produ:any)=>{
+            similarcategory?.map((produ)=>{
               return <Products key={produ.id} produ={(produ)}/>
             }) 
         }

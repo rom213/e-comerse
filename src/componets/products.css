@@ -7,6 +7,7 @@
     border-bottom: 1px solid rgb(87, 81, 81);
     border-left: 1px solid rgb(87, 81, 81) ;
     border-right: 1px solid rgb(87, 81, 81);
+    transition: 10000ms ease-in-out;
 }
 
 
@@ -15,13 +16,15 @@
 .cont1{
     width: 300px;
     height: 60%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
     border-bottom: 1px solid rgb(87, 81, 81);
-    padding: 1rem;
     overflow: hidden;
-    transition: 500ms;
+    gap: 7rem;
+    transition: transform 500ms;
+
+}
+.cont1:hover{
+    transform: scale(1.1);
 }
 
 .cont2{
@@ -57,9 +60,12 @@ span{
     opacity: 0.3;
 }
 .img{
-    max-width: 270px;
-    max-height: 250px;
+    max-width: 240px;
+    max-height: 240px;
     transition: 200ms;
+    position: relative;
+    margin: 0 auto;
+    top: 10px;
 }
 .img2{
     position: absolute;

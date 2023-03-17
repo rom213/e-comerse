@@ -1,24 +1,27 @@
 import axios from 'axios'
-import React from 'react'
-import {useForm} from 'react-hook-form'
-import { useSelector } from 'react-redux'
+import {SubmitHandler, useForm} from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import defaultValues from '../utils/defaultValues'
 import './register.css'
+import { Globalstore } from '../secstore/Store_global'
+ type Regis={
+  email:string,
+  password:string
+ }
 
 const Loginpage = () => {
   const navigate=useNavigate()
-  const {register,handleSubmit,reset}=useForm()
-
+  const {register,handleSubmit,reset}=useForm<Regis>()
+  const { ThunkCarshop }=Globalstore()
   
-  const submit=(data:any)=>{
-      console.log(data);
+  const onSubmit:SubmitHandler<Regis> =(data)=>{
       const url='https://e-commerce-api-v2.academlo.tech/api/v1/users/login'
       axios.post(url,data)
         .then(res=>{console.log(res.data)
         reset()
         localStorage.setItem('token', res.data.token)  
         localStorage.setItem('name', `${res.data.user.firstName} ${res.data.user.lastName}` )
+        ThunkCarshop()
         })
         .catch(err=>{
           localStorage.clear()
@@ -57,7 +60,7 @@ const Loginpage = () => {
         </div>
       </div>
       <br />
-      <form onSubmit={handleSubmit(submit)} className='form'>
+      <form onSubmit={handleSubmit(onSubmit)} className='form'>
          <input {...register('email')} id='email' className='inpu' type="text" placeholder='your email' />
          <input {...register('password')} id='password' className='inpu' type="password" placeholder='your password' />
          <button className='btn3' >log in</button>

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import './products.css'
-import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import { setproinf } from '../store/slices/product.info'
+import { setupdate } from '../store/slices/product.info'
 import axios from 'axios'
 import config from '../utils/bearertoken'
-import { getcarthunk } from '../store/slices/token.carshopin'
-import { setstate } from '../store/slices/state.slice'
+import { productts } from '../utils/interfase'
+import { Globalstore } from '../secstore/Store_global'
+
 
 
 type props={
-    produ:any,
+    produ:productts,
 }
 
 
@@ -20,17 +20,19 @@ const [add, setadd] = useState(1)
 const [img, setimg] = useState(0)
 const navigate=useNavigate()    
 const dispatch=useDispatch()
-const { cartshopin }=useSelector((state:any)=>state)
+const slider:HTMLButtonElement | null =document.querySelector('.cont1')
+
+const { carshopp, ThunkCarshop }=Globalstore()
 
 
 
 
 const agregarcarrito=()=>{
-    let s,t
-    for (let index = 0; index < cartshopin.length; index++) {
-        if(produ?.id===cartshopin[index].productId){
-            s=(cartshopin[index].id)
-            t=cartshopin?.[index].quantity
+    let s:number=0,t:number=0
+    for (let index = 0; index < carshopp.length; index++) {
+        if(produ?.id===carshopp[index].productId){
+            s=(carshopp[index].id)
+            t=carshopp[index].quantity
           }
     }
     
@@ -43,19 +45,19 @@ const agregarcarrito=()=>{
         }
         axios.put(url,data,config)
             .then(res=>{console.log('con exito')
-            dispatch(getcarthunk())
+            ThunkCarshop()
         })
         
     }else{
         if (add===1) {
-            const url:any='https://e-commerce-api-v2.academlo.tech/api/v1/cart'
+            const url='https://e-commerce-api-v2.academlo.tech/api/v1/cart'
             const data={
                 quantity: add,
                 productId:produ?.id
             }
             axios.post(url,data,config)
             .then(res=>{console.log('agregado con exito');
-            dispatch(getcarthunk())
+            ThunkCarshop()
         })
             .catch(err=>{console.log(err)})
         }
@@ -65,11 +67,15 @@ const agregarcarrito=()=>{
 
 const handleClick=()=>{
     navigate(`/product/${produ.id}`)
-    dispatch(setproinf(produ))
+    dispatch(setupdate(produ))
 }
+
+
+
+
   return (
         <div onClick={handleClick} className='content'>
-
+  
         <header onMouseOut={()=>setimg(0)} onMouseOver={()=>setimg(1)}  className='cont1'>
            <img className='img' src={`${produ.images[img].url}`} alt="" />
         </header>   
