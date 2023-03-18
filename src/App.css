@@ -66,12 +66,12 @@ button:hover{
     color: rgb(249, 133, 133);
 }
 .desple{
-    position: absolute;
+    position: fixed;
     top: 60px;
     right: 0;
     width: 400px;
     background-color: #fff;
-    z-index: 5000;
+    z-index: 2000;
     border-bottom: 1px solid rgb(87, 81, 81);
     border-left: 1px solid rgb(87, 81, 81) ;
     border-right: 1px solid rgb(87, 81, 81);
@@ -82,16 +82,8 @@ button:hover{
     gap: 1rem;
     padding-top: 40px;
     padding-bottom: 220px;
-    animation-name:desple1;
-    animation-duration: 1.5s;
-    animation-timing-function: ease-in;
+    animation: move-up 1s ease-out forwards;
 }
-@keyframes desple1{
-    0%{
-        transform: translate(80%);
-    }
-}
-
 
 
 
@@ -109,7 +101,7 @@ button:hover{
 }
 .price{
     position: fixed;
-    top: 530px;
+    top: 540px;
     right: 26px;
     width: 365px;
     height: 100px;
@@ -121,15 +113,18 @@ button:hover{
     flex-direction: column;
     overflow: hidden;
     z-index: 1000;
+    animation: move-up1 1s ease-out forwards;
 }
 .yourcard{
     position: fixed;
     top: 60px;
+    right: 25px;
     z-index: 200;
     width: 360px;
     display: flex;
     background-color: #fff;
     border-bottom: 1px solid rgb(87, 81, 81);
+    animation: move-up1 1s ease-out forwards;
 
 }
 .h{
@@ -209,4 +204,19 @@ button:hover{
         background-position: 200% center;
     }
 }
-
+@keyframes move-up {
+    from {
+      right: -200px;
+    }
+    to {
+      right: 0;
+    }
+  }
+  @keyframes move-up1 {
+    from {
+      right: -200px;
+    }
+    to {
+      right: 25px;
+    }
+  }
