@@ -22,11 +22,12 @@ const App:React.FC = ()=> {
   const [navigator, setnavigator] = useState(0)
   const navigate= useNavigate() 
   
-  const {ThunkCarshop,carshopp, ThunkProdu} = Globalstore()
+  const {ThunkCarshop,carshopp, ThunkProdu,thunkpurshases} = Globalstore()
 
   useEffect(()=> {
     ThunkProdu()
     ThunkCarshop()
+    thunkpurshases()
   }, [local])
 
 

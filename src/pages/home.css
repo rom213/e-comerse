@@ -6,7 +6,7 @@
     overflow: hidden;
     gap: 1rem;
     animation-name:desple;
-    animation-duration: 1.5s;
+    animation-duration: 0.9s;
     animation-iteration-count: 1;
     animation-direction: alternate;
     animation-fill-mode: forwards;

@@ -17,6 +17,7 @@ const Home = () => {
 
 
     const {pproducts,ThunkProdu} =Globalstore()
+    
     const {register,handleSubmit,reset}= useForm<data>()
     
     useEffect(() => {

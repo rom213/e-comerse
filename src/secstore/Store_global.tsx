@@ -1,7 +1,7 @@
 import axios from 'axios'
 import create from 'zustand'
 import config from '../utils/bearertoken'
-import { Carshop, productts } from '../utils/interfase'
+import { Carshop, ppurchases, productts } from '../utils/interfase'
 
 
 interface initialstate{
@@ -9,7 +9,7 @@ interface initialstate{
     ThunkProdu:()=>Promise<void>,
     carshopp:Carshop[],
     ThunkCarshop:()=>Promise<void>
-    purshases:productts[],
+    purshases:ppurchases[],
     thunkpurshases:()=>Promise<void>
 }
 
@@ -44,7 +44,7 @@ thunkpurshases:async ()=> {
 const url:string='https://e-commerce-api-v2.academlo.tech/api/v1/purchases'
     axios.get(url,config)
     .then(res=>{
-        const s:productts[]=res.data
+        const s:ppurchases[]=res.data
         set(state=>({
             purshases:s
         }))

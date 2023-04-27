@@ -90,7 +90,7 @@ const Productpage:React.FC<props>= ({setnavigator}) => {
           })
     setcount(0)
       }else{
-          if (add===1) {
+          if (add) {
               const url='https://e-commerce-api-v2.academlo.tech/api/v1/cart'
               const data={
                   quantity: add,
